@@ -1,0 +1,18 @@
+.idea/
+
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# ---- Virtual environment ----
+.venv/
+env/
+venv/
+
+# ---- Data ----
+data/
+checkpoints/
+logs/
