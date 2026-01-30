@@ -1,0 +1,192 @@
+# ============================================================================
+# MAE-AST Fine-tuning Configuration - ALL TASKS
+# ============================================================================
+
+seed: 42
+
+# Model
+model:
+  # Patch (for patch-based input)
+  patch_size_time: 16
+  patch_size_freq: 16
+
+  # Frame (for frame-based input)
+  frame_size_time: 2
+
+  # Encoder (from pretrained)
+  encoder_embed_dim: 768
+  encoder_depth: 6
+  encoder_num_heads: 12
+  encoder_ffn_dim: 3072
+
+  # Decoder (not used during fine-tuning, but needed for loading)
+  decoder_embed_dim: 768
+  decoder_depth: 2
+  decoder_num_heads: 12
+  decoder_ffn_dim: 3072
+
+  # Positional embeddings
+  use_sinusoidal_pos: true
+  use_conv_pos: false
+
+  # Dropout
+  dropout: 0.4
+
+# Masking (not used during fine-tuning, but needed for config)
+masking:
+  mask_ratio: 0.75
+  mask_type: "random"
+  mask_batched: true
+
+# ============================================================================
+# TASK-SPECIFIC CONFIGURATIONS
+# ============================================================================
+
+tasks:
+  # ----------------------------------------------------------------------
+  # ESC-50 - Environmental Sound Classification
+  # Paper: Patch-based, variable length, 50 classes
+  # ----------------------------------------------------------------------
+  esc50:
+    train_manifest: "data/manifests/esc50/train.tsv"
+    val_manifest: "data/manifests/esc50/test.tsv"
+
+    # Task properties
+    num_classes: 50
+    task_type: "single-label"
+    metric: "accuracy"
+
+    # Data configuration
+    max_duration: 5.0  # ESC-50 clips are 5 seconds
+    sample_rate: 16000
+    feature_type: "fbank"
+    n_mels: 128
+    normalize: true
+
+    input_type: "patch"
+
+    # Training
+    batch_size: 32
+    num_epochs: 50
+    learning_rate: 5.0e-5
+    weight_decay: 0.01
+    warmup_epochs: 5
+
+  # ----------------------------------------------------------------------
+  # Speech Commands v2 (KS2) - Keyword Spotting
+  # Paper: Frame-based, 1 second, 35 classes
+  # ----------------------------------------------------------------------
+  speechcommands_v2:
+    train_manifest: "data/manifests/speechcommands_v2/train.tsv"
+    val_manifest: "data/manifests/speechcommands_v2/test.tsv"
+
+    # Task properties
+    num_classes: 35
+    task_type: "single-label"
+    metric: "accuracy"
+
+    # Data configuration
+    max_duration: 1.0  # 1 second
+    sample_rate: 16000
+    feature_type: "fbank"
+    n_mels: 128
+    normalize: true
+
+    input_type: "patch"
+
+    # Training
+    batch_size: 32
+    num_epochs: 50
+    learning_rate: 5.0e-5
+    weight_decay: 0.01
+    warmup_epochs: 5
+
+  # ----------------------------------------------------------------------
+  # Speech Commands v1 (KS1) - Keyword Spotting
+  # Paper: Frame-based, 1 second, 30 classes
+  # ----------------------------------------------------------------------
+  speechcommands_v1:
+    train_manifest: "data/manifests/speechcommands_v1/train.tsv"
+    val_manifest: "data/manifests/speechcommands_v1/test.tsv"
+
+    # Task properties
+    num_classes: 30
+    task_type: "single-label"
+    metric: "accuracy"
+
+    # Data configuration
+    max_duration: 1.0
+    sample_rate: 16000
+    feature_type: "fbank"
+    n_mels: 128
+    normalize: true
+
+    input_type: "patch"
+
+    # Training
+    batch_size: 32
+    num_epochs: 50
+    learning_rate: 5.0e-5
+    weight_decay: 0.01
+    warmup_epochs: 5
+
+  # ----------------------------------------------------------------------
+  # IEMOCAP - Emotion Recognition
+  # Paper: Frame-based, variable length, 4 emotions
+  # ----------------------------------------------------------------------
+  iemocap:
+    train_manifest: "data/manifests/iemocap/train.tsv"
+    val_manifest: "data/manifests/iemocap/test.tsv"
+
+    # Task properties
+    num_classes: 4  # Happy, Sad, Angry, Neutral
+    task_type: "single-label"
+    metric: "accuracy"
+
+    # Data configuration
+    max_duration: 10.0  # IEMOCAP has variable length
+    sample_rate: 16000
+    feature_type: "fbank"
+    n_mels: 128
+    normalize: true
+
+    input_type: "patch"
+
+    # Training
+    batch_size: 32
+    num_epochs: 50
+    learning_rate: 5.0e-5
+    weight_decay: 0.01
+    warmup_epochs: 5
+
+# ============================================================================
+# SHARED TRAINING SETTINGS
+# ============================================================================
+
+training:
+  # Optimizer
+  optimizer: "adamw"
+
+  # Scheduler
+  scheduler: "cosine"
+
+  # Gradient clipping
+  max_grad_norm: 1.0
+
+  # Checkpointing
+  checkpoint_dir: "checkpoints/finetune/patch"
+  keep_last_n: 3
+
+  # Logging
+  log_every: 50
+
+# Logging
+logging:
+  log_dir: "logs/finetune/frame"
+  use_tensorboard: true
+
+# Hardware
+hardware:
+  num_workers: 4
+  pin_memory: true
+  device: "cuda"
