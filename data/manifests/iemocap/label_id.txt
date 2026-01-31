@@ -1,6 +1,0 @@
-label_map = {
-    "neu": 0,
-    "hap": 1,
-    "ang": 2,
-    "sad": 3
-}
