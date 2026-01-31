@@ -96,8 +96,10 @@ All runtime behavior is controlled through files in `configs/`:
   - `pretrain_frame_chunk_config.yaml`
 
 - **Fine‑tuning**
-  - `finetune_patch_config.yaml`
-  - `finetune_frame_config.yaml`
+  - `finetune_patch_random_config.yaml`
+  - `finetune_patch_chunk_config.yaml`
+  - `finetune_frame_random_config.yaml`
+  - `finetune_frame_chunk_config.yaml`
 
 Configurations define:
 
