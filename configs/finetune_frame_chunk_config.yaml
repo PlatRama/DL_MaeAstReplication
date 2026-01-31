@@ -7,11 +7,11 @@ seed: 42
 # Model
 model:
   # Patch (for patch-based input)
-  patch_size_time: 16
-  patch_size_freq: 16
+  patch_size_time: 24
+  patch_size_freq: 24
 
   # Frame (for frame-based input)
-  frame_size_time: 2
+  frame_size_time: 4
 
   # Encoder (from pretrained)
   encoder_embed_dim: 768
@@ -35,7 +35,7 @@ model:
 # Masking (not used during fine-tuning, but needed for config)
 masking:
   mask_ratio: 0.75
-  mask_type: "random"
+  mask_type: "chunk"
   mask_batched: true
 
 # ============================================================================
@@ -63,7 +63,8 @@ tasks:
     n_mels: 128
     normalize: true
 
-    input_type: "patch"
+    # Model configuration
+    input_type: "frame"
 
     # Training
     batch_size: 32
@@ -92,7 +93,8 @@ tasks:
     n_mels: 128
     normalize: true
 
-    input_type: "patch"
+    # Model configuration (frame-based for speech)
+    input_type: "frame"  # Use frame-based tokenization
 
     # Training
     batch_size: 32
@@ -121,7 +123,8 @@ tasks:
     n_mels: 128
     normalize: true
 
-    input_type: "patch"
+    # Model configuration
+    input_type: "frame"
 
     # Training
     batch_size: 32
@@ -150,7 +153,7 @@ tasks:
     n_mels: 128
     normalize: true
 
-    input_type: "patch"
+    input_type: "frame"
 
     # Training
     batch_size: 32
@@ -174,7 +177,7 @@ training:
   max_grad_norm: 1.0
 
   # Checkpointing
-  checkpoint_dir: "checkpoints/finetune/patch"
+  checkpoint_dir: "checkpoints/finetune/frame/chunk"
   keep_last_n: 3
 
   # Logging
@@ -182,7 +185,7 @@ training:
 
 # Logging
 logging:
-  log_dir: "logs/finetune/frame"
+  log_dir: "logs/finetune/frame/chunk"
   use_tensorboard: true
 
 # Hardware

@@ -7,11 +7,11 @@ seed: 42
 # Model
 model:
   # Patch (for patch-based input)
-  patch_size_time: 16
-  patch_size_freq: 16
+  patch_size_time: 24
+  patch_size_freq: 24
 
   # Frame (for frame-based input)
-  frame_size_time: 2
+  frame_size_time: 4
 
   # Encoder (from pretrained)
   encoder_embed_dim: 768
@@ -30,7 +30,7 @@ model:
   use_conv_pos: false
 
   # Dropout
-  dropout: 0.4
+  dropout: 0.3
 
 # Masking (not used during fine-tuning, but needed for config)
 masking:
@@ -94,7 +94,7 @@ tasks:
     normalize: true
 
     # Model configuration (frame-based for speech)
-    input_type: "patch"  # Use frame-based tokenization
+    input_type: "frame"  # Use frame-based tokenization
 
     # Training
     batch_size: 32

@@ -95,7 +95,7 @@ def create_model(config: dict):
     """Create MAE-AST model from config."""
     model_config = MAEASTConfig(
         # input
-        input_type=config.get('input_type', 'patch'),
+        input_type=config['model']['input_type'],
         n_mels=config['data']['n_mels'],
         patch_size_time=config['model']['patch_size_time'],
         patch_size_freq=config['model']['patch_size_freq'],
